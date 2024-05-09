@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct PopoverView: View {
+    let xkcdService: XKCDService
+    
     @State var isFetching = false
     
     @State var errorString: String = ""
@@ -17,6 +19,10 @@ struct PopoverView: View {
     @State var comic: Comic? = nil
     
     @AppStorage("comicNum") var comicNum: Int = 1
+    
+    init(xkcdService: XKCDService) {
+        self.xkcdService = xkcdService
+    }
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -44,21 +50,29 @@ struct PopoverView: View {
             
             ControlGroup() {
                 Button("Prev") {
-                    comicNum -= 1
-                    getComic(comicNum: comicNum)
+                    Task {
+                        comicNum -= 1
+                        await getComic(comicNum: comicNum)
+                    }
                 }.disabled(isFetching || comicNum == 1)
             
                 Button("Random") {
-                    getRandomComic()
+                    Task {
+                        await getRandomComic()
+                    }
                 }.disabled(isFetching)
                 
                 Button("Current") {
-                    getLastComic()
+                    Task {
+                        await getLastComic()
+                    }
                 }.disabled(isFetching)
             
                 Button("Next") {
-                    comicNum += 1
-                    getComic(comicNum: comicNum)
+                    Task {
+                        comicNum += 1
+                        await getComic(comicNum: comicNum)
+                    }
                 }.disabled(isFetching || comicNum == comicsCount)
             }.controlGroupStyle(.navigation)
             
@@ -79,73 +93,66 @@ struct PopoverView: View {
             maxHeight: 800
         )
         .task {
-            getComicsCount()
-            getComic(comicNum: comicNum)
+            await getComicsCount()
+            await getComic(comicNum: comicNum)
         }
     }
     
-    func getComic(comicNum: Int) {
-        let url = URL(string: "https://xkcd.com/\(comicNum)/info.0.json")!
-        
-        isFetching = true
-        errorString = ""
-        URLSession.shared.fetchData(at: url) { result in
-            switch result {
-                case .success(let newComic):
-                  comic = newComic
-                  isFetching = false
-                case .failure(let error):
-                  comic = nil
-                  errorString = error.localizedDescription
-                  isFetching = false
-                  print(error)
-            }
+    func getComic(comicNum: Int) async {
+        do {
+            isFetching = true
+            errorString = ""
+
+            let newComic = try await xkcdService.getComic(comicNum: comicNum)
+
+            comic = newComic
+            isFetching = false
+        } catch {
+            comic = nil
+            errorString = error.localizedDescription
+            isFetching = false
+            print(error)
         }
     }
     
-    func getRandomComic() {
+    func getRandomComic() async {
         comicNum = Int.random(in: 1..<comicsCount)
-        getComic(comicNum: comicNum)
+        await getComic(comicNum: comicNum)
     }
     
-    func getLastComic() {
-        let url = URL(string: "https://xkcd.com/info.0.json")!
-        
-        isFetching = true
-        errorString = ""
-        URLSession.shared.fetchData(at: url) { result in
-            switch result {
-                case .success(let newComic):
-                  comic = newComic
-                  isFetching = false
-                case .failure(let error):
-                  errorString = error.localizedDescription
-                  isFetching = false
-                  print(error)
-            }
+    func getLastComic() async {
+        do {
+            isFetching = true
+            errorString = ""
+
+            let newComic = try await xkcdService.getLastComic()
+
+            comic = newComic
+            isFetching = false
+        } catch {
+            comic = nil
+            errorString = error.localizedDescription
+            isFetching = false
+            print(error)
         }
     }
     
-    func getComicsCount() {
-        let url = URL(string: "https://xkcd.com/info.0.json")!
-        
-        isFetching = true
-        errorString = ""
-        URLSession.shared.fetchData(at: url) { result in
-            switch result {
-                case .success(let newComic):
-                  comicsCount = newComic.num
-                case .failure(let error):
-                  errorString = error.localizedDescription
-                  isFetching = false
-                  print(error)
+    func getComicsCount() async {
+        do {
+            let _comicsCount = try await xkcdService.getComicsCount()
+            if (_comicsCount != nil) {
+                comicsCount = _comicsCount!
             }
+        } catch {
+            print(error)
         }
     }
 }
 
 struct PopoverView_Previews: PreviewProvider {
     static var previews: some View {
-        PopoverView()
+        PopoverView(
+            xkcdService: XKCDService(baseURL: "https://xkcd.com")
+        )
     }
 }

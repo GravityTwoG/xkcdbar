@@ -11,7 +11,7 @@ import SwiftUI
 struct XKCDBarApp: App {
     var body: some Scene {
         MenuBarExtra("XKCDBar", systemImage: "pencil.slash") {
-            PopoverView()
+            PopoverView(xkcdService: XKCDService(baseURL: "https://xkcd.com"))
         }.menuBarExtraStyle(.window)
     }
 }
