@@ -14,7 +14,6 @@ struct ContentView: View {
             Image("xkcd-icon").resizable().scaledToFit().frame(width: 64, height: 64)
             Text("XKCDBar - xkcd comics in your menubar.")
             Text("Author: Marsel Abazbekov")
-            
         }
     }
 }

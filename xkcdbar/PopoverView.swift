@@ -8,9 +8,11 @@
 import SwiftUI
 
 struct PopoverView: View {
-    @State var fetching = false
+    @State var isFetching = false
     
     @State var errorString: String = ""
+    
+    @State var comicsCount: Int = 1
     
     @State var comic: Comic? = nil
     
@@ -18,29 +20,15 @@ struct PopoverView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
+            Spacer()
+            
             HStack(alignment: .center) {
                 Spacer()
                 
-                if fetching {
+                if isFetching && comic == nil {
                     ProgressView().padding(8)
                 } else if let existingComic = comic {
-                    VStack {
-                        Link(
-                            "\(existingComic.num): \(existingComic.title)",
-                            destination: existingComic.wrappedImgURL
-                        )
-                        AsyncImage(
-                            url: existingComic.wrappedImgURL,
-                            content: { image in
-                                image
-                                    .resizable()
-                                    .scaledToFit()
-                            },
-                            placeholder: {
-                                ProgressView().padding(8)
-                            }
-                        )
-                    }
+                    ComicView(comic: existingComic).disabled(isFetching)
                 } else if errorString != "" {
                     Text(errorString)
                 } else {
@@ -49,44 +37,49 @@ struct PopoverView: View {
                 
                 Spacer()
             }
+            
+            Spacer()
                         
             Divider()
             
-            HStack {
+            ControlGroup() {
                 Button("Prev") {
                     comicNum -= 1
                     getComic(comicNum: comicNum)
-                }.disabled(fetching)
-                
-                Spacer()
+                }.disabled(isFetching || comicNum == 1)
             
-                Button("random") {
+                Button("Random") {
                     getRandomComic()
-                }.disabled(fetching)
+                }.disabled(isFetching)
                 
-                Spacer()
+                Button("Current") {
+                    getLastComic()
+                }.disabled(isFetching)
             
                 Button("Next") {
                     comicNum += 1
                     getComic(comicNum: comicNum)
-                }.disabled(fetching)
-            }
+                }.disabled(isFetching || comicNum == comicsCount)
+            }.controlGroupStyle(.navigation)
             
             Divider()
             
-            Button(action: {
-                NSApplication.shared.terminate(nil)
-            }) {
-                Text("Quit")
-                Spacer()
+            ControlGroup {
+                Button(action: {
+                    NSApplication.shared.terminate(nil)
+                }) {
+                    Text("Quit")
+                    Spacer()
+                }
             }
-            .buttonStyle(.plain)
         }
         .padding(8)
         .frame(
-            idealWidth: 400, maxWidth: 500
+            minWidth: 600, maxWidth: 800,
+            maxHeight: 800
         )
         .task {
+            getComicsCount()
             getComic(comicNum: comicNum)
         }
     }
@@ -94,37 +87,58 @@ struct PopoverView: View {
     func getComic(comicNum: Int) {
         let url = URL(string: "https://xkcd.com/\(comicNum)/info.0.json")!
         
-        fetching = true
+        isFetching = true
         errorString = ""
         URLSession.shared.fetchData(at: url) { result in
             switch result {
-            case .success(let newComic):
-              comic = newComic
-              fetching = false
-            case .failure(let error):
-              comic = nil
-              errorString = error.localizedDescription
-              fetching = false
-              print(error)
+                case .success(let newComic):
+                  comic = newComic
+                  isFetching = false
+                case .failure(let error):
+                  comic = nil
+                  errorString = error.localizedDescription
+                  isFetching = false
+                  print(error)
             }
         }
     }
     
     func getRandomComic() {
+        comicNum = Int.random(in: 1..<comicsCount)
+        getComic(comicNum: comicNum)
+    }
+    
+    func getLastComic() {
         let url = URL(string: "https://xkcd.com/info.0.json")!
         
-        fetching = true
+        isFetching = true
         errorString = ""
         URLSession.shared.fetchData(at: url) { result in
             switch result {
-            case .success(let newComic):
-              let comicsCount = newComic.num
-              comicNum = Int.random(in: 1..<comicsCount)
-              getComic(comicNum: comicNum)
-            case .failure(let error):
-              errorString = error.localizedDescription
-              fetching = false
-              print(error)
+                case .success(let newComic):
+                  comic = newComic
+                  isFetching = false
+                case .failure(let error):
+                  errorString = error.localizedDescription
+                  isFetching = false
+                  print(error)
+            }
+        }
+    }
+    
+    func getComicsCount() {
+        let url = URL(string: "https://xkcd.com/info.0.json")!
+        
+        isFetching = true
+        errorString = ""
+        URLSession.shared.fetchData(at: url) { result in
+            switch result {
+                case .success(let newComic):
+                  comicsCount = newComic.num
+                case .failure(let error):
+                  errorString = error.localizedDescription
+                  isFetching = false
+                  print(error)
             }
         }
     }
