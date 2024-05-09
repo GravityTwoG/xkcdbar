@@ -1,6 +1,9 @@
 {
   "images" : [
-
+    {
+      "filename" : "xkcd-icon.svg",
+      "idiom" : "universal"
+    }
   ],
   "info" : {
     "author" : "xcode",

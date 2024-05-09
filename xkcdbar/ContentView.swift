@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct ContentView: View {
+    
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            Image("xkcd-icon").resizable().scaledToFit().frame(width: 64, height: 64)
+            Text("XKCDBar - xkcd comics in your menubar.")
+            Text("Author: Marsel Abazbekov")
+            
         }
-        .padding()
     }
 }
 
