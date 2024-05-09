@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		891944022BECFB32004D3F26 /* ComicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 891944012BECFB32004D3F26 /* ComicView.swift */; };
 		892CD40B2BECA18900B7E1F0 /* XKCDBarApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892CD40A2BECA18900B7E1F0 /* XKCDBarApp.swift */; };
-		892CD40D2BECA18900B7E1F0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892CD40C2BECA18900B7E1F0 /* ContentView.swift */; };
+		892CD40D2BECA18900B7E1F0 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892CD40C2BECA18900B7E1F0 /* AboutView.swift */; };
 		892CD40F2BECA18A00B7E1F0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 892CD40E2BECA18A00B7E1F0 /* Assets.xcassets */; };
 		892CD4122BECA18A00B7E1F0 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 892CD4112BECA18A00B7E1F0 /* Preview Assets.xcassets */; };
 		892CD41D2BECA18A00B7E1F0 /* xkcdbarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892CD41C2BECA18A00B7E1F0 /* xkcdbarTests.swift */; };
@@ -43,7 +43,7 @@
 		891944012BECFB32004D3F26 /* ComicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComicView.swift; sourceTree = "<group>"; };
 		892CD4072BECA18900B7E1F0 /* xkcdbar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = xkcdbar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		892CD40A2BECA18900B7E1F0 /* XKCDBarApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XKCDBarApp.swift; sourceTree = "<group>"; };
-		892CD40C2BECA18900B7E1F0 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		892CD40C2BECA18900B7E1F0 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		892CD40E2BECA18A00B7E1F0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		892CD4112BECA18A00B7E1F0 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		892CD4132BECA18A00B7E1F0 /* xkcdbar.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = xkcdbar.entitlements; sourceTree = "<group>"; };
@@ -109,12 +109,12 @@
 			children = (
 				892CD4402BECA5D300B7E1F0 /* PopoverView.swift */,
 				891944012BECFB32004D3F26 /* ComicView.swift */,
-				892CD40C2BECA18900B7E1F0 /* ContentView.swift */,
+				892CD40C2BECA18900B7E1F0 /* AboutView.swift */,
 				892CD4492BECC2E700B7E1F0 /* ComicURLSession.swift */,
+				892CD40A2BECA18900B7E1F0 /* XKCDBarApp.swift */,
 				892CD4372BECA22100B7E1F0 /* viewmodels */,
 				892CD4362BECA21B00B7E1F0 /* models */,
 				892CD4352BECA20B00B7E1F0 /* services */,
-				892CD40A2BECA18900B7E1F0 /* XKCDBarApp.swift */,
 				892CD40E2BECA18A00B7E1F0 /* Assets.xcassets */,
 				892CD4132BECA18A00B7E1F0 /* xkcdbar.entitlements */,
 				892CD4102BECA18A00B7E1F0 /* Preview Content */,
@@ -303,7 +303,7 @@
 			files = (
 				891944022BECFB32004D3F26 /* ComicView.swift in Sources */,
 				892CD4412BECA5D300B7E1F0 /* PopoverView.swift in Sources */,
-				892CD40D2BECA18900B7E1F0 /* ContentView.swift in Sources */,
+				892CD40D2BECA18900B7E1F0 /* AboutView.swift in Sources */,
 				892CD43D2BECA3C100B7E1F0 /* ComicViewModel.swift in Sources */,
 				892CD44A2BECC2E700B7E1F0 /* ComicURLSession.swift in Sources */,
 				892CD43B2BECA39100B7E1F0 /* Comic.swift in Sources */,

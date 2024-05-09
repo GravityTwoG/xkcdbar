@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct PopoverView: View {
+    @Environment(\.openWindow) var openWindow
+    
     let xkcdService: XKCDService
     
     @State var isFetching = false
@@ -18,7 +20,7 @@ struct PopoverView: View {
     
     @State var comic: Comic? = nil
     
-    @AppStorage("comicNum") var comicNum: Int = 1
+    @FocusState private var isFocused: Bool
     
     init(xkcdService: XKCDService) {
         self.xkcdService = xkcdService
@@ -51,10 +53,10 @@ struct PopoverView: View {
             ControlGroup() {
                 Button("Prev") {
                     Task {
-                        comicNum -= 1
-                        await getComic(comicNum: comicNum)
+                        XKCDBarApp.comicNum -= 1
+                        await getComic(comicNum: XKCDBarApp.comicNum)
                     }
-                }.disabled(isFetching || comicNum == 1)
+                }.disabled(isFetching || XKCDBarApp.comicNum == 1)
             
                 Button("Random") {
                     Task {
@@ -70,11 +72,22 @@ struct PopoverView: View {
             
                 Button("Next") {
                     Task {
-                        comicNum += 1
-                        await getComic(comicNum: comicNum)
+                        XKCDBarApp.comicNum += 1
+                        await getComic(comicNum: XKCDBarApp.comicNum)
                     }
-                }.disabled(isFetching || comicNum == comicsCount)
+                }.disabled(isFetching || XKCDBarApp.comicNum == comicsCount)
             }.controlGroupStyle(.navigation)
+            
+            Divider()
+            
+            ControlGroup {
+                Button(action: {
+                    openWindow(id: "about")
+                }) {
+                    Text("About")
+                    Spacer()
+                }
+            }
             
             Divider()
             
@@ -87,15 +100,30 @@ struct PopoverView: View {
                 }
             }
         }
-        .padding(8)
-        .frame(
-            minWidth: 600, maxWidth: 800,
-            maxHeight: 800
-        )
-        .task {
-            await getComicsCount()
-            await getComic(comicNum: comicNum)
-        }
+            .padding(8)
+            .task {
+                await getComicsCount()
+                await getComic(comicNum: XKCDBarApp.comicNum)
+            }
+            .focusable()
+            .focused($isFocused)
+            .focusEffectDisabled()
+            .onKeyPress(.space, phases: [.down, .up]) { keyPress in
+                if keyPress.phase == .down {
+                    openWindow(id: "preview")
+                }
+                if keyPress.phase == .up {
+                    let window = NSApplication.shared.windows.last
+                    if window != nil && window?.title == "Preview"{
+                        window?.close()
+                    }
+                }
+            
+                return .handled
+            }
+            .onAppear {
+                isFocused = true
+            }
     }
     
     func getComic(comicNum: Int) async {
@@ -116,8 +144,8 @@ struct PopoverView: View {
     }
     
     func getRandomComic() async {
-        comicNum = Int.random(in: 1..<comicsCount)
-        await getComic(comicNum: comicNum)
+        XKCDBarApp.comicNum = Int.random(in: 1..<comicsCount)
+        await getComic(comicNum: XKCDBarApp.comicNum)
     }
     
     func getLastComic() async {
