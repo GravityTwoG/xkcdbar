@@ -17,9 +17,9 @@
 		892CD4292BECA18A00B7E1F0 /* xkcdbarUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892CD4282BECA18A00B7E1F0 /* xkcdbarUITestsLaunchTests.swift */; };
 		892CD4392BECA37300B7E1F0 /* XKCDService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892CD4382BECA37300B7E1F0 /* XKCDService.swift */; };
 		892CD43B2BECA39100B7E1F0 /* Comic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892CD43A2BECA39100B7E1F0 /* Comic.swift */; };
-		892CD43D2BECA3C100B7E1F0 /* ComicViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892CD43C2BECA3C100B7E1F0 /* ComicViewModel.swift */; };
+		892CD43D2BECA3C100B7E1F0 /* XKCDViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892CD43C2BECA3C100B7E1F0 /* XKCDViewModel.swift */; };
 		892CD4412BECA5D300B7E1F0 /* PopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892CD4402BECA5D300B7E1F0 /* PopoverView.swift */; };
-		892CD44A2BECC2E700B7E1F0 /* ComicURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892CD4492BECC2E700B7E1F0 /* ComicURLSession.swift */; };
+		897CFBDE2BEE36C800B9C8C7 /* PreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897CFBDD2BEE36C800B9C8C7 /* PreviewView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,9 +54,9 @@
 		892CD4282BECA18A00B7E1F0 /* xkcdbarUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = xkcdbarUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		892CD4382BECA37300B7E1F0 /* XKCDService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XKCDService.swift; sourceTree = "<group>"; };
 		892CD43A2BECA39100B7E1F0 /* Comic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comic.swift; sourceTree = "<group>"; };
-		892CD43C2BECA3C100B7E1F0 /* ComicViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComicViewModel.swift; sourceTree = "<group>"; };
+		892CD43C2BECA3C100B7E1F0 /* XKCDViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XKCDViewModel.swift; sourceTree = "<group>"; };
 		892CD4402BECA5D300B7E1F0 /* PopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverView.swift; sourceTree = "<group>"; };
-		892CD4492BECC2E700B7E1F0 /* ComicURLSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComicURLSession.swift; sourceTree = "<group>"; };
+		897CFBDD2BEE36C800B9C8C7 /* PreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,10 +107,7 @@
 		892CD4092BECA18900B7E1F0 /* xkcdbar */ = {
 			isa = PBXGroup;
 			children = (
-				892CD4402BECA5D300B7E1F0 /* PopoverView.swift */,
-				891944012BECFB32004D3F26 /* ComicView.swift */,
-				892CD40C2BECA18900B7E1F0 /* AboutView.swift */,
-				892CD4492BECC2E700B7E1F0 /* ComicURLSession.swift */,
+				897CFBDF2BEE374300B9C8C7 /* views */,
 				892CD40A2BECA18900B7E1F0 /* XKCDBarApp.swift */,
 				892CD4372BECA22100B7E1F0 /* viewmodels */,
 				892CD4362BECA21B00B7E1F0 /* models */,
@@ -166,9 +163,20 @@
 		892CD4372BECA22100B7E1F0 /* viewmodels */ = {
 			isa = PBXGroup;
 			children = (
-				892CD43C2BECA3C100B7E1F0 /* ComicViewModel.swift */,
+				892CD43C2BECA3C100B7E1F0 /* XKCDViewModel.swift */,
 			);
 			path = viewmodels;
+			sourceTree = "<group>";
+		};
+		897CFBDF2BEE374300B9C8C7 /* views */ = {
+			isa = PBXGroup;
+			children = (
+				892CD4402BECA5D300B7E1F0 /* PopoverView.swift */,
+				897CFBDD2BEE36C800B9C8C7 /* PreviewView.swift */,
+				891944012BECFB32004D3F26 /* ComicView.swift */,
+				892CD40C2BECA18900B7E1F0 /* AboutView.swift */,
+			);
+			path = views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -303,9 +311,9 @@
 			files = (
 				891944022BECFB32004D3F26 /* ComicView.swift in Sources */,
 				892CD4412BECA5D300B7E1F0 /* PopoverView.swift in Sources */,
+				897CFBDE2BEE36C800B9C8C7 /* PreviewView.swift in Sources */,
 				892CD40D2BECA18900B7E1F0 /* AboutView.swift in Sources */,
-				892CD43D2BECA3C100B7E1F0 /* ComicViewModel.swift in Sources */,
-				892CD44A2BECC2E700B7E1F0 /* ComicURLSession.swift in Sources */,
+				892CD43D2BECA3C100B7E1F0 /* XKCDViewModel.swift in Sources */,
 				892CD43B2BECA39100B7E1F0 /* Comic.swift in Sources */,
 				892CD4392BECA37300B7E1F0 /* XKCDService.swift in Sources */,
 				892CD40B2BECA18900B7E1F0 /* XKCDBarApp.swift in Sources */,

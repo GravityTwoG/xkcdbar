@@ -10,20 +10,12 @@ import SwiftUI
 struct PopoverView: View {
     @Environment(\.openWindow) var openWindow
     
-    let xkcdService: XKCDService
-    
-    @State var isFetching = false
-    
-    @State var errorString: String = ""
-    
-    @State var comicsCount: Int = 1
-    
-    @State var comic: Comic? = nil
-    
     @FocusState private var isFocused: Bool
     
-    init(xkcdService: XKCDService) {
-        self.xkcdService = xkcdService
+    @State var vm: XKCDViewModel
+    
+    init(xkcdViewModel: XKCDViewModel) {
+        self.vm = xkcdViewModel
     }
     
     var body: some View {
@@ -33,12 +25,12 @@ struct PopoverView: View {
             HStack(alignment: .center) {
                 Spacer()
                 
-                if isFetching && comic == nil {
+                if vm.isFetching && vm.comic == nil {
                     ProgressView().padding(8)
-                } else if let existingComic = comic {
-                    ComicView(comic: existingComic).disabled(isFetching)
-                } else if errorString != "" {
-                    Text(errorString)
+                } else if let existingComic = vm.comic {
+                    ComicView(comic: existingComic).disabled(vm.isFetching)
+                } else if vm.errorString != "" {
+                    Text(vm.errorString)
                 } else {
                     Text("Unknown error")
                 }
@@ -53,29 +45,27 @@ struct PopoverView: View {
             ControlGroup() {
                 Button("Prev") {
                     Task {
-                        XKCDBarApp.comicNum -= 1
-                        await getComic(comicNum: XKCDBarApp.comicNum)
+                        await vm.getPrevComic()
                     }
-                }.disabled(isFetching || XKCDBarApp.comicNum == 1)
+                }.disabled(vm.isFetching || !vm.hasPrev)
             
                 Button("Random") {
                     Task {
-                        await getRandomComic()
+                        await vm.getRandomComic()
                     }
-                }.disabled(isFetching)
+                }.disabled(vm.isFetching)
                 
                 Button("Current") {
                     Task {
-                        await getLastComic()
+                        await vm.getLastComic()
                     }
-                }.disabled(isFetching)
+                }.disabled(vm.isFetching || vm.comicNum == vm.comicsCount)
             
                 Button("Next") {
                     Task {
-                        XKCDBarApp.comicNum += 1
-                        await getComic(comicNum: XKCDBarApp.comicNum)
+                        await vm.getNextComic()
                     }
-                }.disabled(isFetching || XKCDBarApp.comicNum == comicsCount)
+                }.disabled(vm.isFetching || !vm.hasNext)
             }.controlGroupStyle(.navigation)
             
             Divider()
@@ -102,8 +92,8 @@ struct PopoverView: View {
         }
             .padding(8)
             .task {
-                await getComicsCount()
-                await getComic(comicNum: XKCDBarApp.comicNum)
+                await vm.getComicsCount()
+                await vm.getLastComic()
             }
             .focusable()
             .focused($isFocused)
@@ -125,62 +115,14 @@ struct PopoverView: View {
                 isFocused = true
             }
     }
-    
-    func getComic(comicNum: Int) async {
-        do {
-            isFetching = true
-            errorString = ""
-
-            let newComic = try await xkcdService.getComic(comicNum: comicNum)
-
-            comic = newComic
-            isFetching = false
-        } catch {
-            comic = nil
-            errorString = error.localizedDescription
-            isFetching = false
-            print(error)
-        }
-    }
-    
-    func getRandomComic() async {
-        XKCDBarApp.comicNum = Int.random(in: 1..<comicsCount)
-        await getComic(comicNum: XKCDBarApp.comicNum)
-    }
-    
-    func getLastComic() async {
-        do {
-            isFetching = true
-            errorString = ""
-
-            let newComic = try await xkcdService.getLastComic()
-
-            comic = newComic
-            isFetching = false
-        } catch {
-            comic = nil
-            errorString = error.localizedDescription
-            isFetching = false
-            print(error)
-        }
-    }
-    
-    func getComicsCount() async {
-        do {
-            let _comicsCount = try await xkcdService.getComicsCount()
-            if (_comicsCount != nil) {
-                comicsCount = _comicsCount!
-            }
-        } catch {
-            print(error)
-        }
-    }
 }
 
 struct PopoverView_Previews: PreviewProvider {
     static var previews: some View {
         PopoverView(
-            xkcdService: XKCDService(baseURL: "https://xkcd.com")
+            xkcdViewModel: XKCDViewModel(
+                xkcdService: XKCDService(baseURL: "https://xkcd.com")
+            )
         )
     }
 }

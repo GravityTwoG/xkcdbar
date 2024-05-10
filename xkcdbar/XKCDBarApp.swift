@@ -11,11 +11,15 @@ import SwiftUI
 struct XKCDBarApp: App {
     let baseURL = "https://xkcd.com"
     
-    @AppStorage("comicNum") static var comicNum: Int = 1
+    let xkcdViewModel: XKCDViewModel
+    
+    init() {
+        self.xkcdViewModel = XKCDViewModel(xkcdService: XKCDService(baseURL: baseURL))
+    }
     
     var body: some Scene {
         MenuBarExtra("XKCDBar", systemImage: "pencil.slash") {
-            PopoverView(xkcdService: XKCDService(baseURL: baseURL))
+            PopoverView(xkcdViewModel: xkcdViewModel)
                 .frame(
                     minWidth: 600, maxWidth: 800,
                     maxHeight: 800
@@ -23,7 +27,7 @@ struct XKCDBarApp: App {
         }.menuBarExtraStyle(.window)
           
         Window("Preview", id: "preview") {
-            PopoverView(xkcdService: XKCDService(baseURL: baseURL))
+            PreviewView(xkcdViewModel: xkcdViewModel)
                 .frame(
                     maxWidth: .infinity,
                     maxHeight: .infinity
