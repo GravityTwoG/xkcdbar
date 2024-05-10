@@ -98,13 +98,15 @@ struct PopoverView: View {
             .focusable()
             .focused($isFocused)
             .focusEffectDisabled()
-            .onKeyPress(.space, phases: [.down, .up]) { keyPress in
+            .onKeyPress(.space, phases: [.all]) { keyPress in
                 if keyPress.phase == .down {
+                    vm.previewOpened = true
                     openWindow(id: "preview")
                 }
                 if keyPress.phase == .up {
                     let window = NSApplication.shared.windows.last
-                    if window != nil && window?.title == "Preview"{
+                    if window != nil && window?.title == "Preview" {
+                        vm.previewOpened = false
                         window?.close()
                     }
                 }

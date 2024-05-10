@@ -7,6 +7,7 @@
 
 import Foundation
 
+
 @Observable
 class XKCDViewModel {
     let xkcdService: XKCDService
@@ -24,6 +25,8 @@ class XKCDViewModel {
     var hasPrev: Bool { comicNum > 1 }
     
     var hasNext: Bool { comicNum < comicsCount }
+    
+    var previewOpened = false
     
     init(xkcdService: XKCDService) {
         self.xkcdService = xkcdService

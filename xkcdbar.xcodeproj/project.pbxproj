@@ -20,6 +20,7 @@
 		892CD43D2BECA3C100B7E1F0 /* XKCDViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892CD43C2BECA3C100B7E1F0 /* XKCDViewModel.swift */; };
 		892CD4412BECA5D300B7E1F0 /* PopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892CD4402BECA5D300B7E1F0 /* PopoverView.swift */; };
 		897CFBDE2BEE36C800B9C8C7 /* PreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897CFBDD2BEE36C800B9C8C7 /* PreviewView.swift */; };
+		8985716B2BEE3F8A0050A557 /* MenuBarExtraAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 8985716A2BEE3F8A0050A557 /* MenuBarExtraAccess */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +65,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8985716B2BEE3F8A0050A557 /* MenuBarExtraAccess in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -195,6 +197,9 @@
 			dependencies = (
 			);
 			name = xkcdbar;
+			packageProductDependencies = (
+				8985716A2BEE3F8A0050A557 /* MenuBarExtraAccess */,
+			);
 			productName = xkcdbar;
 			productReference = 892CD4072BECA18900B7E1F0 /* xkcdbar.app */;
 			productType = "com.apple.product-type.application";
@@ -267,6 +272,9 @@
 				Base,
 			);
 			mainGroup = 892CD3FE2BECA18900B7E1F0;
+			packageReferences = (
+				897CFBE02BEE3E5200B9C8C7 /* XCRemoteSwiftPackageReference "MenuBarExtraAccess" */,
+			);
 			productRefGroup = 892CD4082BECA18900B7E1F0 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -631,6 +639,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		897CFBE02BEE3E5200B9C8C7 /* XCRemoteSwiftPackageReference "MenuBarExtraAccess" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/orchetect/MenuBarExtraAccess";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.5;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8985716A2BEE3F8A0050A557 /* MenuBarExtraAccess */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 897CFBE02BEE3E5200B9C8C7 /* XCRemoteSwiftPackageReference "MenuBarExtraAccess" */;
+			productName = MenuBarExtraAccess;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 892CD3FF2BECA18900B7E1F0 /* Project object */;
 }

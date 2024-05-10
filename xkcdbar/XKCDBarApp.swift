@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import MenuBarExtraAccess
 
 @main
 struct XKCDBarApp: App {
@@ -24,7 +25,12 @@ struct XKCDBarApp: App {
                     minWidth: 600, maxWidth: 800,
                     maxHeight: 800
                 )
-        }.menuBarExtraStyle(.window)
+        }.menuBarExtraStyle(.window).menuBarExtraAccess(
+            isPresented: Binding(
+                get: { !xkcdViewModel.previewOpened },
+                set: {value in xkcdViewModel.previewOpened = !value}
+            )
+        )
           
         Window("Preview", id: "preview") {
             PreviewView(xkcdViewModel: xkcdViewModel)
