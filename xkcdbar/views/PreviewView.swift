@@ -45,23 +45,23 @@ struct PreviewView: View {
             .focusable()
             .focused($isFocused)
             .focusEffectDisabled()
+            .onAppear {
+                isFocused = true
+            }
             .onKeyPress(.space, phases: [.all]) { keyPress in
                 if keyPress.phase == .down {
-                    vm.previewOpened = true
+                    vm.popoverOpened = false
                     openWindow(id: "preview")
                 }
                 if keyPress.phase == .up {
                     let window = NSApplication.shared.windows.last
                     if window != nil && window?.title == "Preview" {
-                        vm.previewOpened = false
+                        vm.popoverOpened = true
                         window?.close()
                     }
                 }
             
                 return .handled
-            }
-            .onAppear {
-                isFocused = true
             }
     }
 }

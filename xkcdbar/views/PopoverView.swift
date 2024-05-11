@@ -20,7 +20,40 @@ struct PopoverView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            Spacer()
+            ControlGroup() {
+                Button("Prev") {
+                    Task {
+                        await vm.getPrevComic()
+                    }
+                }
+                .disabled(vm.isFetching || !vm.hasPrev)
+                .keyboardShortcut(.leftArrow)
+            
+                Button("Random") {
+                    Task {
+                        await vm.getRandomComic()
+                    }
+                }
+                .disabled(vm.isFetching)
+                .keyboardShortcut(.upArrow)
+                
+                Button("Current") {
+                    Task {
+                        await vm.getLastComic()
+                    }
+                }
+                .disabled(vm.isFetching || vm.comicNum == vm.comicsCount)
+                .keyboardShortcut(.downArrow)
+            
+                Button("Next") {
+                    Task {
+                        await vm.getNextComic()
+                    }
+                }
+                .disabled(vm.isFetching || !vm.hasNext)
+                .keyboardShortcut(.rightArrow)
+            }
+            .controlGroupStyle(.navigation)
             
             HStack(alignment: .center) {
                 Spacer()
@@ -38,57 +71,23 @@ struct PopoverView: View {
                 Spacer()
             }
             
-            Spacer()
-                        
-            Divider()
-            
-            ControlGroup() {
-                Button("Prev") {
-                    Task {
-                        await vm.getPrevComic()
-                    }
-                }.disabled(vm.isFetching || !vm.hasPrev)
-            
-                Button("Random") {
-                    Task {
-                        await vm.getRandomComic()
-                    }
-                }.disabled(vm.isFetching)
-                
-                Button("Current") {
-                    Task {
-                        await vm.getLastComic()
-                    }
-                }.disabled(vm.isFetching || vm.comicNum == vm.comicsCount)
-            
-                Button("Next") {
-                    Task {
-                        await vm.getNextComic()
-                    }
-                }.disabled(vm.isFetching || !vm.hasNext)
-            }.controlGroupStyle(.navigation)
-            
-            Divider()
-            
+            HStack() {
+                Spacer()
+                Text("Hold space bar to open in fullscreen")
+                Spacer()
+            }
+
             ControlGroup {
-                Button(action: {
+                Button("About") {
+                    vm.popoverOpened = false
                     openWindow(id: "about")
-                }) {
-                    Text("About")
-                    Spacer()
-                }
-            }
-            
-            Divider()
-            
-            ControlGroup {
-                Button(action: {
+                }.keyboardShortcut("I")
+                
+                Button("Quit") {
                     NSApplication.shared.terminate(nil)
-                }) {
-                    Text("Quit")
-                    Spacer()
-                }
+                }.keyboardShortcut("Q")
             }
+            .controlGroupStyle(.navigation)
         }
             .padding(8)
             .task {
@@ -98,23 +97,23 @@ struct PopoverView: View {
             .focusable()
             .focused($isFocused)
             .focusEffectDisabled()
+            .onAppear {
+                isFocused = true
+            }
             .onKeyPress(.space, phases: [.all]) { keyPress in
                 if keyPress.phase == .down {
-                    vm.previewOpened = true
+                    vm.popoverOpened = false
                     openWindow(id: "preview")
                 }
                 if keyPress.phase == .up {
                     let window = NSApplication.shared.windows.last
                     if window != nil && window?.title == "Preview" {
-                        vm.previewOpened = false
+                        vm.popoverOpened = true
                         window?.close()
                     }
                 }
             
                 return .handled
-            }
-            .onAppear {
-                isFocused = true
             }
     }
 }

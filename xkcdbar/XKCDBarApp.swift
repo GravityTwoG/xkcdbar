@@ -24,13 +24,15 @@ struct XKCDBarApp: App {
                 .frame(
                     minWidth: 600, maxWidth: 800,
                     maxHeight: 800
-                )
+                ).background(Color(NSColor.windowBackgroundColor))
         }.menuBarExtraStyle(.window).menuBarExtraAccess(
             isPresented: Binding(
-                get: { !xkcdViewModel.previewOpened },
-                set: {value in xkcdViewModel.previewOpened = !value}
+                get: { xkcdViewModel.popoverOpened },
+                set: {value in xkcdViewModel.popoverOpened = value}
             )
-        )
+        ).commands(content: {
+            
+        })
           
         Window("Preview", id: "preview") {
             PreviewView(xkcdViewModel: xkcdViewModel)
@@ -39,10 +41,10 @@ struct XKCDBarApp: App {
                     maxHeight: .infinity
                 )
                 .onAppear {
-                    DispatchQueue.main.async {
-                        if let window = NSApplication.shared.windows.last {
-                            window.zoom(window)
-                        }
+                    if let window = NSApplication.shared.windows.last {
+                        window.zoom(window)
+                        window.makeKeyAndOrderFront(nil)
+                        window.makeKey()
                     }
                 }
         }

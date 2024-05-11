@@ -19,7 +19,7 @@ struct ComicView: View {
             Link(
                 "\(comic.num): \(comic.title)",
                 destination: URL(string: "https://xkcd.com/\(comic.num)")!
-            ).font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+            ).font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/).keyboardShortcut("g")
             AsyncImage(
                 url: comic.wrappedImgURL,
                 content: { image in

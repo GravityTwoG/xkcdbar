@@ -26,7 +26,7 @@ class XKCDViewModel {
     
     var hasNext: Bool { comicNum < comicsCount }
     
-    var previewOpened = false
+    var popoverOpened = false
     
     init(xkcdService: XKCDService) {
         self.xkcdService = xkcdService
