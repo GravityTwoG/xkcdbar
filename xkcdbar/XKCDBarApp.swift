@@ -19,20 +19,27 @@ struct XKCDBarApp: App {
     }
     
     var body: some Scene {
-        MenuBarExtra("XKCDBar", systemImage: "pencil.slash") {
+        MenuBarExtra {
             PopoverView(xkcdViewModel: xkcdViewModel)
                 .frame(
                     minWidth: 600, maxWidth: 800,
                     maxHeight: 800
                 ).background(Color(NSColor.windowBackgroundColor))
+        } label: {
+            let image: NSImage = {
+                let ratio = $0.size.height / $0.size.width
+                $0.size.height = 28
+                $0.size.width = 28 / ratio
+                return $0
+            }(NSImage(named: "xkcd-icon-white")!)
+
+            Image(nsImage: image).renderingMode(.template)
         }.menuBarExtraStyle(.window).menuBarExtraAccess(
             isPresented: Binding(
                 get: { xkcdViewModel.popoverOpened },
                 set: {value in xkcdViewModel.popoverOpened = value}
             )
-        ).commands(content: {
-            
-        })
+        )
           
         Window("Preview", id: "preview") {
             PreviewView(xkcdViewModel: xkcdViewModel)
@@ -51,6 +58,11 @@ struct XKCDBarApp: App {
         
         Window("About XKCDBar", id: "about") {
             AboutView()
+                .onAppear {
+                    if let window = NSApplication.shared.windows.last {
+                        window.makeKeyAndOrderFront(nil)
+                    }
+                }
         }.windowResizability(WindowResizability.contentSize)
     }
 }
